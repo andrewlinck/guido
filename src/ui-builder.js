@@ -53,7 +53,7 @@ function Node(type, attributes, children = []) {
   return Object.assign(node, { toString: () => toXml(node) });
 }
 
-function fromJsonObject(object) {
+export function fromJsonObject(object) {
   const children = (object.children && object.children.length)
     ? object.children.map(fromJsonObject)
     : [];
@@ -79,7 +79,7 @@ function validate(type, options = {}) {
   });
 }
 
-function Config(options = {}, children = []) {
+export function Config(options = {}, children = []) {
   validate('Config', options);
   const attributes = {
     Version: options.version || LatestVersion,
@@ -88,7 +88,7 @@ function Config(options = {}, children = []) {
   return Node('Extensions', attributes, children);
 }
 
-function Panel(options, pages) {
+export function Panel(options, pages) {
   validate('Panel', options);
   const attributes = {};
   const { panelId, name, color, order, icon, type } = options;
@@ -114,14 +114,14 @@ function Panel(options, pages) {
 }
 
 
-function ActionButton(options = {}) {
+export function ActionButton(options = {}) {
   const panel = Panel(options);
   panel.attributes.ActivityType = 'Custom';
 
   return panel;
 }
 
-function WebApp(options) {
+export function WebApp(options) {
   const panel = Panel(options);
   panel.attributes.ActivityType = 'WebApp';
   panel.attributes.ActivityData = options.url;
@@ -129,7 +129,7 @@ function WebApp(options) {
   return panel;
 }
 
-function Page(options, pages) {
+export function Page(options, pages) {
   validate('Page', options);
   const attributes = {};
   if (options.name) {
@@ -145,7 +145,7 @@ function Page(options, pages) {
   return Node('Page', attributes, pages);
 }
 
-function Row(options = {}, widgets = []) {
+export function Row(options = {}, widgets = []) {
   validate('Row', options);
   const attributes = {};
   if (options.text) {
@@ -219,23 +219,23 @@ function Widget(type, options) {
   return Node('Widget', attributes);
 }
 
-const ToggleButton = (options) => Widget('ToggleButton', options);
+export const ToggleButton = (options) => Widget('ToggleButton', options);
 
-const Slider = (options) => Widget('Slider', options);
+export const Slider = (options) => Widget('Slider', options);
 
-const Button = (options) => Widget('Button', options);
+export const Button = (options) => Widget('Button', options);
 
-const GroupButton = (options) => Widget('GroupButton', options);
+export const GroupButton = (options) => Widget('GroupButton', options);
 
-const Spacer = (options) => Widget('Spacer', options);
+export const Spacer = (options) => Widget('Spacer', options);
 
-const Spinner = (options) => Widget('Spinner', options);
+export const Spinner = (options) => Widget('Spinner', options);
 
-const DirectionalPad = (options) => Widget('DirectionalPad', options);
+export const DirectionalPad = (options) => Widget('DirectionalPad', options);
 
-const IconButton = (options) => Widget('Button', Object.assign(options, { size: 1 }));
+export const IconButton = (options) => Widget('Button', Object.assign(options, { size: 1 }));
 
-const Text = (options) => Widget('Text', options);
+export const Text = (options) => Widget('Text', options);
 
 function tag(name, content) {
   if (Array.isArray(content)) {
@@ -277,22 +277,3 @@ function toXml(json, prettify = false) {
 
   return prettify ? prettifyXml(xml) : xml;
 }
-
-module.exports = {
-  Config,
-  Panel,
-  ActionButton,
-  WebApp,
-  Page,
-  Row,
-  Button,
-  Slider,
-  Spacer,
-  IconButton,
-  Spinner,
-  DirectionalPad,
-  Text,
-  GroupButton,
-  ToggleButton,
-  fromJsonObject,
-};
