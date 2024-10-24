@@ -2,9 +2,9 @@
  * Simple button on home screen to toggle proximity on / off.
  * Changes the text on the button to indicate current state.
  */
-const xapi = require('xapi');
-const ui = require('./ui');
-const { Config, ActionButton } = require('./ui-builder');
+import xapi from 'xapi';
+import ui from './ui';
+import { Config, ActionButton } from './ui-builder';
 
 function createButton(isOn) {
   const name = isOn ? 'Disable Proximity' : 'Enable proximity';
